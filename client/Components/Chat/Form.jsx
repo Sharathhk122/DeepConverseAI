@@ -40,7 +40,7 @@ const handleSend = async (e) => {
 
   setLoading(true);
   try {
-    const response = await axios.post("https://deepconverseai-3.onrender.com/get-bot-response", {
+    const response = await axios.post("https://deepconverseai-3.onrender.com/api/get-bot-response", {
 
       userInput,
     });
@@ -76,7 +76,7 @@ const handleRetry = async (index) => {
   setLoading(true);
   
   try {
-    const response = await axios.post("https://deepconverseai-3.onrender.com/get-bot-response", {
+    const response = await axios.post("https://deepconverseai-3.onrender.com/api/get-bot-response", {
 
       userInput,
     });
