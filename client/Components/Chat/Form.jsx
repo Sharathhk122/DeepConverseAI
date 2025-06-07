@@ -18,85 +18,89 @@ const Form = ({ close, proMember, address, freeTrail, messages, setMessages }) =
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleSend = async (e) => {
-    e.preventDefault();
-    const inputText = editingMessageId !== null ? editedMessage : userInput;
-    if (inputText.trim() === "") return;
+// Form.jsx (updated handleSend and handleRetry functions)
+const handleSend = async (e) => {
+  e.preventDefault();
+  const inputText = editingMessageId !== null ? editedMessage : userInput;
+  if (inputText.trim() === "") return;
 
-    // If editing an existing message
-    if (editingMessageId !== null) {
-      const updatedMessages = messages.map((msg, idx) => 
-        idx === editingMessageId ? { ...msg, text: editedMessage } : msg
-      );
-      setMessages(updatedMessages);
-      setEditingMessageId(null);
-      setEditedMessage("");
-      return;
-    }
+  // If editing an existing message
+  if (editingMessageId !== null) {
+    const updatedMessages = messages.map((msg, idx) => 
+      idx === editingMessageId ? { ...msg, text: editedMessage } : msg
+    );
+    setMessages(updatedMessages);
+    setEditingMessageId(null);
+    setEditedMessage("");
+    return;
+  }
 
-    const userMessage = { text: userInput, sender: "user" };
-    setMessages([...messages, userMessage]);
+  const userMessage = { text: userInput, sender: "user" };
+  setMessages([...messages, userMessage]);
 
-    setLoading(true);
-    try {
-     
-        const response = await axios.post(
-  "https://deepconverseai.onrender.com/api/get-bot-response",
-  { userInput }
-);
-      
-      const cleanedBotMessage = response.data.botMessage.text.replace(/<\/s>$/, "");
-      const botMessage = { 
-        text: cleanedBotMessage, 
-        sender: "bot", 
-        isMarkdown: true 
-      };
-      setMessages((prev) => [...prev, botMessage]);
-    } catch (error) {
-      console.error("Error fetching response:", error);
-      const errorMessage = { 
-        text: "Sorry, I could not fetch a response.", 
-        sender: "bot",
-        isMarkdown: false 
-      };
-      setMessages((prev) => [...prev, errorMessage]);
-    }
-
-    setLoading(false);
-    setUserInput("");
-  };
-
-  const handleRetry = async (index) => {
-    if (index <= 0 || messages[index - 1].sender !== "user") return;
+  setLoading(true);
+  try {
+    const response = await axios.post("/api/get-bot-response", {
+      userInput,
+    });
     
-    const userInput = messages[index - 1].text;
-    setLoading(true);
-    
-    try {
-      const response = await axios.post(
-  "https://deepconverseai.onrender.com/api/get-bot-response",
-  { userInput }
-);
-      
-      const cleanedBotMessage = response.data.botMessage.text.replace(/<\/s>$/, "");
-      const updatedMessages = [...messages];
-      updatedMessages[index] = { 
-        ...updatedMessages[index], 
-        text: cleanedBotMessage 
-      };
-      setMessages(updatedMessages);
-    } catch (error) {
-      console.error("Error retrying:", error);
-      const updatedMessages = [...messages];
-      updatedMessages[index] = { 
-        ...updatedMessages[index], 
-        text: "Sorry, I could not fetch a response." 
-      };
-      setMessages(updatedMessages);
+    if (response.data.error) {
+      throw new Error(response.data.error);
     }
     
-    setLoading(false);
-  };
+    const botMessage = { 
+      text: response.data.botMessage.text, 
+      sender: "bot", 
+      isMarkdown: true 
+    };
+    setMessages((prev) => [...prev, botMessage]);
+  } catch (error) {
+    console.error("Error fetching response:", error);
+    const errorMessage = { 
+      text: error.response?.data?.botMessage?.text || "Sorry, I could not fetch a response.", 
+      sender: "bot",
+      isMarkdown: false 
+    };
+    setMessages((prev) => [...prev, errorMessage]);
+  }
+
+  setLoading(false);
+  setUserInput("");
+};
+
+const handleRetry = async (index) => {
+  if (index <= 0 || messages[index - 1].sender !== "user") return;
+  
+  const userInput = messages[index - 1].text;
+  setLoading(true);
+  
+  try {
+    const response = await axios.post("/api/get-bot-response", {
+      userInput,
+    });
+    
+    if (response.data.error) {
+      throw new Error(response.data.error);
+    }
+    
+    const updatedMessages = [...messages];
+    updatedMessages[index] = { 
+      ...updatedMessages[index], 
+      text: response.data.botMessage.text
+    };
+    setMessages(updatedMessages);
+  } catch (error) {
+    console.error("Error retrying:", error);
+    const updatedMessages = [...messages];
+    updatedMessages[index] = { 
+      ...updatedMessages[index], 
+      text: error.response?.data?.botMessage?.text || "Sorry, I could not fetch a response." 
+    };
+    setMessages(updatedMessages);
+  }
+  
+  setLoading(false);
+};
 
   const handleCopy = (text) => {
     navigator.clipboard.writeText(text);
