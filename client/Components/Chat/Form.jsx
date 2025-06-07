@@ -39,7 +39,7 @@ const Form = ({ close, proMember, address, freeTrail, messages, setMessages }) =
 
     setLoading(true);
     try {
-      const response = await axios.post("http://localhost:4000/get-bot-response", {
+      const response = await axios.post("https://deepconverseai.onrender.com/get-bot-response", {
         userInput,
       });
       const cleanedBotMessage = response.data.botMessage.text.replace(/<\/s>$/, "");
@@ -70,7 +70,7 @@ const Form = ({ close, proMember, address, freeTrail, messages, setMessages }) =
     setLoading(true);
     
     try {
-      const response = await axios.post("http://localhost:4000/get-bot-response", {
+      const response = await axios.post("https://deepconverseai.onrender.com/get-bot-response", {
         userInput,
       });
       const cleanedBotMessage = response.data.botMessage.text.replace(/<\/s>$/, "");
