@@ -39,8 +39,11 @@ const Form = ({ close, proMember, address, freeTrail, messages, setMessages }) =
 
     setLoading(true);
     try {
-      const response = await axios.post("https://deepconverseai.onrender.com/get-bot-response", {
-        userInput,
+     
+        const response = await axios.post(
+  "https://deepconverseai.onrender.com/api/get-bot-response",
+  { userInput }
+);
       });
       const cleanedBotMessage = response.data.botMessage.text.replace(/<\/s>$/, "");
       const botMessage = { 
