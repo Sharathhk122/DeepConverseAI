@@ -3,35 +3,45 @@ import * as dotenv from "dotenv";
 import cors from "cors";
 import axios from "axios";
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
-app.use(cors()); // Enable CORS
-app.use(express.json()); // Parse JSON requests
 
-// OpenRouter API details
-const OPENROUTER_API_KEY = "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";
+// Enable CORS for your frontend URL (replace with your Render frontend URL)
+const allowedOrigins = [
+  "http://localhost:3000",  // Local dev
+  "https://deepconverseai-1.onrender.com",  // Your Render frontend URL
+];
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
+
+app.use(express.json());
+
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-// Debug: Check if API key is loaded
 if (!OPENROUTER_API_KEY) {
-  console.error("❌ ERROR: OPENROUTER_API_KEY is missing! Check your .env file.");
-  process.exit(1); // Exit the app if API key is missing
+  console.error("❌ OPENROUTER_API_KEY is missing!");
+  process.exit(1);
 }
 
-// Force IPv4 to prevent connection issues
-process.env.NODE_OPTIONS = "--dns-result-order=ipv4first";
-
-app.post("https://deepconverseai-1.onrender.com/get-bot-response", async (req, res) => {
+// API endpoint
+app.post("/api/get-bot-response", async (req, res) => {
   const { userInput } = req.body;
 
   if (!userInput) {
-    return res.status(400).json({ error: "❌ Error: userInput is required." });
+    return res.status(400).json({ error: "User input is required." });
   }
 
   try {
-    // Request to OpenRouter API
     const response = await axios.post(
       OPENROUTER_API_URL,
       {
@@ -42,27 +52,35 @@ app.post("https://deepconverseai-1.onrender.com/get-bot-response", async (req, r
         headers: {
           "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
+          "HTTP-Referer": "https://deepconverseai.onrender.com",  // Update with your Render backend URL
+          "X-Title": "AI Chat App",
         },
-        timeout: 90000, // 30 seconds timeout
+        timeout: 30000,
       }
     );
 
-    // Send response to client
-    res.json({ botMessage: { text: response.data.choices[0].message.content, sender: "bot" } });
-
+    const botResponse = response.data.choices[0]?.message?.content || "Sorry, I couldn't process your request.";
+    res.json({
+      botMessage: {
+        text: botResponse.replace(/<\/s>$/, ""),
+        sender: "bot",
+      },
+    });
   } catch (error) {
-    console.error("❌ Error fetching response:", error.message);
-
-    if (error.response) {
-      console.error("❌ API Response:", error.response.data);
-    }
-
-    res.status(error.response?.status || 500).json({
-      botMessage: error.response?.data?.error || "⚠️ API request failed.",
+    console.error("API Error:", error.message);
+    res.status(500).json({
+      botMessage: {
+        text: "⚠️ Sorry, the server encountered an error. Please try again.",
+        sender: "bot",
+      },
     });
   }
 });
 
-// Start the server
+// Health check endpoint (required for Render)
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ status: "OK" });
+});
+
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`✅ AI server started on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
