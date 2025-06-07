@@ -9,31 +9,33 @@ dotenv.config();
 
 const app = express();
 
-// CORS configuration
+// ✅ CORS setup (allow from any origin)
 app.use(cors({
-  origin: "*", // You can restrict to specific frontend domain in production
+  origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true
 }));
 
-// Middleware
+// ✅ Parse JSON request bodies
 app.use(express.json());
 
-// API configuration
+// ✅ OpenRouter endpoint
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-// Get API keys from environment variable (comma-separated)
+// ✅ Load API keys from environment
 const API_KEYS = process.env.OPENROUTER_API_KEYS
   ? process.env.OPENROUTER_API_KEYS.split(",")
   : [];
 
 if (API_KEYS.length === 0) {
-  console.warn("⚠️ No API keys configured. Please set OPENROUTER_API_KEYS in .env");
+  console.warn("⚠️ No API keys configured. Please set OPENROUTER_API_KEYS in .env or Render.");
 }
 
-// POST: Get bot response
+// ✅ POST: Get bot response
 app.post("/api/get-bot-response", async (req, res) => {
   const { userInput } = req.body;
+
+  console.log("📨 Incoming request:", userInput);
 
   if (!userInput) {
     return res.status(400).json({
@@ -47,10 +49,12 @@ app.post("/api/get-bot-response", async (req, res) => {
 
   for (const apiKey of API_KEYS) {
     try {
+      console.log(`🔐 Trying API key: ${apiKey.slice(0, 8)}...`);
+
       const response = await axios.post(
         OPENROUTER_API_URL,
         {
-          model: "deepseek/deepseek-r1:free",
+          model: "deepseek/deepseek-r1:free", // You can try "openai/gpt-3.5-turbo" to test
           messages: [{ role: "user", content: userInput }],
         },
         {
@@ -64,23 +68,30 @@ app.post("/api/get-bot-response", async (req, res) => {
         }
       );
 
-      const botReply = response.data.choices?.[0]?.message?.content;
+      const botReply = response.data?.choices?.[0]?.message?.content;
+
       if (botReply) {
+        console.log("✅ Response received from OpenRouter");
         return res.json({
           botMessage: {
             text: botReply,
             sender: "bot"
           }
         });
+      } else {
+        console.error("⚠️ Response missing content.");
       }
+
     } catch (error) {
-      console.error(`❌ API Error with key ${apiKey.slice(0, 5)}...:`, error.message);
-      if (error.response?.data) console.error("Response:", error.response.data);
-      // Try next key if available
+      console.error(`❌ Error with key ${apiKey.slice(0, 5)}...: ${error.message}`);
+      if (error.response) {
+        console.error("📦 API Error Data:", JSON.stringify(error.response.data, null, 2));
+      }
+      // Continue to next key
     }
   }
 
-  // If all keys failed
+  // ❌ All API keys failed
   res.status(500).json({
     botMessage: {
       text: "Sorry, the service is currently unavailable. Please try again later.",
@@ -89,13 +100,13 @@ app.post("/api/get-bot-response", async (req, res) => {
   });
 });
 
-// GET: Health check
+// ✅ GET: Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "healthy" });
 });
 
-// Start server
+// ✅ Start the server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on port ${PORT}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
