@@ -25,7 +25,7 @@ app.use(cors({
 
 app.use(express.json());
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const OPENROUTER_API_KEY = "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";
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 if (!OPENROUTER_API_KEY) {
