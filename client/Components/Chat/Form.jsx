@@ -44,7 +44,7 @@ const Form = ({ close, proMember, address, freeTrail, messages, setMessages }) =
   "https://deepconverseai.onrender.com/api/get-bot-response",
   { userInput }
 );
-      });
+      
       const cleanedBotMessage = response.data.botMessage.text.replace(/<\/s>$/, "");
       const botMessage = { 
         text: cleanedBotMessage, 
@@ -77,7 +77,7 @@ const Form = ({ close, proMember, address, freeTrail, messages, setMessages }) =
   "https://deepconverseai.onrender.com/api/get-bot-response",
   { userInput }
 );
-      });
+      
       const cleanedBotMessage = response.data.botMessage.text.replace(/<\/s>$/, "");
       const updatedMessages = [...messages];
       updatedMessages[index] = { 
