@@ -23,7 +23,7 @@ if (!OPENROUTER_API_KEY) {
 // Force IPv4 to prevent connection issues
 process.env.NODE_OPTIONS = "--dns-result-order=ipv4first";
 
-app.post("/get-bot-response", async (req, res) => {
+app.post("https://deepconverseai-1.onrender.com/get-bot-response", async (req, res) => {
   const { userInput } = req.body;
 
   if (!userInput) {
