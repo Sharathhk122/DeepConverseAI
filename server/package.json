@@ -1,7 +1,7 @@
 {
-  "name": "codex-server",
-  "version": "0.0.0",
+  "name": "deepconverseai-backend",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -11,8 +11,7 @@
     "axios": "^1.8.1",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "openai": "^3.1.0"
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
