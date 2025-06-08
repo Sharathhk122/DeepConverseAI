@@ -101,7 +101,7 @@ app.post("/api/get-bot-response", async (req, res) => {
 });
 
 // ✅ GET: Health check endpoint
-app.get("/health", (req, res) => {
+app.get("/", (req, res) => {
   res.status(200).json({ status: "healthy" });
 });
 
