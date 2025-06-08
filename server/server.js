@@ -1,41 +1,40 @@
-// server.js
 import express from "express";
 import cors from "cors";
 import axios from "axios";
 import * as dotenv from "dotenv";
 
-// Load environment variables from .env
+// Load .env variables
 dotenv.config();
 
 const app = express();
 
-// CORS config
+// ✅ CORS setup (allow all)
 app.use(cors({
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true
 }));
 
-// Enable JSON body parsing
+// ✅ Parse JSON request bodies
 app.use(express.json());
 
-// OpenRouter endpoint
+// ✅ OpenRouter endpoint
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-// Load API keys
+// ✅ Load API keys from environment
 const API_KEYS = process.env.OPENROUTER_API_KEYS
   ? process.env.OPENROUTER_API_KEYS.split(",")
   : [];
 
 if (API_KEYS.length === 0) {
-  console.warn("⚠️ No API keys configured. Please set OPENROUTER_API_KEYS in Render or .env.");
+  console.warn("⚠️ No API keys configured. Please set OPENROUTER_API_KEYS in .env or Render.");
 }
 
-// POST /api/get-bot-response
+// ✅ POST: Get bot response
 app.post("/api/get-bot-response", async (req, res) => {
   const { userInput } = req.body;
 
-  console.log("📨 Incoming:", userInput);
+  console.log("📨 Incoming request:", userInput);
 
   if (!userInput || typeof userInput !== "string") {
     return res.status(400).json({
@@ -52,37 +51,46 @@ app.post("/api/get-bot-response", async (req, res) => {
       const response = await axios.post(
         OPENROUTER_API_URL,
         {
-          model: "deepseek/deepseek-r1:free", // You can replace this with another model
+          model: "openai/gpt-3.5-turbo", // Replace with other model if needed
           messages: [{ role: "user", content: userInput }]
         },
         {
           headers: {
             "Authorization": `Bearer ${apiKey}`,
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://deepconverseai.onrender.com",
+            "HTTP-Referer": "https://deepconverseai.onrender.com", // Your frontend link
             "X-Title": "DeepConverse AI"
           },
           timeout: 30000
         }
       );
 
-      const reply = response.data?.choices?.[0]?.message?.content;
+      const botReply = response.data?.choices?.[0]?.message?.content;
 
-      if (reply) {
+      if (botReply) {
         return res.json({
           botMessage: {
-            text: reply,
+            text: botReply,
             sender: "bot"
           }
         });
+      } else {
+        console.error("⚠️ Response missing content.");
       }
 
-    } catch (err) {
-      console.error(`❌ Key ${apiKey.slice(0, 5)} failed:`, err.message);
+    } catch (error) {
+      console.error(`❌ Error with key ${apiKey.slice(0, 5)}...: ${error.message}`);
+      if (error.response) {
+        console.error("📦 API Error Response:", JSON.stringify(error.response.data, null, 2));
+      } else {
+        console.error("⚠️ Axios Error:", error);
+      }
+      // Try next key
     }
   }
 
-  return res.status(500).json({
+  // All keys failed
+  res.status(500).json({
     botMessage: {
       text: "Service unavailable. Please try again later.",
       sender: "bot"
@@ -90,18 +98,18 @@ app.post("/api/get-bot-response", async (req, res) => {
   });
 });
 
-// GET: Health check
+// ✅ Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "healthy" });
 });
 
-// GET: Root route (optional)
+// ✅ Optional root route
 app.get("/", (req, res) => {
   res.send("✅ DeepConverse AI backend is live.");
 });
 
-// Start server
+// ✅ Start server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on port http://localhost:${PORT}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
