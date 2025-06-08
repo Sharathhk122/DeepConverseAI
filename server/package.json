@@ -1,12 +1,11 @@
 {
   "name": "codex-server",
-  "private": true,
   "version": "0.0.0",
+  "private": true,
   "type": "module",
   "scripts": {
-  "start": "node server.js",
-  "dev": "nodemon server.js",
-    "server": "nodemon server"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "dependencies": {
     "axios": "^1.8.1",
