@@ -4,44 +4,44 @@ import cors from "cors";
 import axios from "axios";
 import * as dotenv from "dotenv";
 
-// Load .env variables
+// Load environment variables from .env
 dotenv.config();
 
 const app = express();
 
-// ✅ CORS setup (allow from any origin)
+// CORS config
 app.use(cors({
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true
 }));
 
-// ✅ Parse JSON request bodies
+// Enable JSON body parsing
 app.use(express.json());
 
-// ✅ OpenRouter endpoint
+// OpenRouter endpoint
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
-// ✅ Load API keys from environment
+// Load API keys
 const API_KEYS = process.env.OPENROUTER_API_KEYS
   ? process.env.OPENROUTER_API_KEYS.split(",")
   : [];
 
 if (API_KEYS.length === 0) {
-  console.warn("⚠️ No API keys configured. Please set OPENROUTER_API_KEYS in .env or Render.");
+  console.warn("⚠️ No API keys configured. Please set OPENROUTER_API_KEYS in Render or .env.");
 }
 
-// ✅ POST: Get bot response
+// POST /api/get-bot-response
 app.post("/api/get-bot-response", async (req, res) => {
   const { userInput } = req.body;
 
-  console.log("📨 Incoming request:", userInput);
+  console.log("📨 Incoming:", userInput);
 
-  if (!userInput) {
+  if (!userInput || typeof userInput !== "string") {
     return res.status(400).json({
-      error: "User input is required",
+      error: "userInput is required and must be a string",
       botMessage: {
-        text: "Please provide a message to continue.",
+        text: "Please enter a message.",
         sender: "bot"
       }
     });
@@ -49,13 +49,11 @@ app.post("/api/get-bot-response", async (req, res) => {
 
   for (const apiKey of API_KEYS) {
     try {
-      console.log(`🔐 Trying API key: ${apiKey.slice(0, 8)}...`);
-
       const response = await axios.post(
         OPENROUTER_API_URL,
         {
-          model: "deepseek/deepseek-r1:free", // You can try "openai/gpt-3.5-turbo" to test
-          messages: [{ role: "user", content: userInput }],
+          model: "deepseek/deepseek-r1:free", // You can replace this with another model
+          messages: [{ role: "user", content: userInput }]
         },
         {
           headers: {
@@ -68,45 +66,42 @@ app.post("/api/get-bot-response", async (req, res) => {
         }
       );
 
-      const botReply = response.data?.choices?.[0]?.message?.content;
+      const reply = response.data?.choices?.[0]?.message?.content;
 
-      if (botReply) {
-        console.log("✅ Response received from OpenRouter");
+      if (reply) {
         return res.json({
           botMessage: {
-            text: botReply,
+            text: reply,
             sender: "bot"
           }
         });
-      } else {
-        console.error("⚠️ Response missing content.");
       }
 
-    } catch (error) {
-      console.error(`❌ Error with key ${apiKey.slice(0, 5)}...: ${error.message}`);
-      if (error.response) {
-        console.error("📦 API Error Data:", JSON.stringify(error.response.data, null, 2));
-      }
-      // Continue to next key
+    } catch (err) {
+      console.error(`❌ Key ${apiKey.slice(0, 5)} failed:`, err.message);
     }
   }
 
-  // ❌ All API keys failed
-  res.status(500).json({
+  return res.status(500).json({
     botMessage: {
-      text: "Sorry, the service is currently unavailable. Please try again later.",
+      text: "Service unavailable. Please try again later.",
       sender: "bot"
     }
   });
 });
 
-// ✅ GET: Health check endpoint
-app.get("/", (req, res) => {
+// GET: Health check
+app.get("/health", (req, res) => {
   res.status(200).json({ status: "healthy" });
 });
 
-// ✅ Start the server
+// GET: Root route (optional)
+app.get("/", (req, res) => {
+  res.send("✅ DeepConverse AI backend is live.");
+});
+
+// Start server
 const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`✅ Server is running on port http://localhost:${PORT}`);
 });
