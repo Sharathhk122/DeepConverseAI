@@ -31,20 +31,22 @@ app.post("/get-bot-response", async (req, res) => {
   }
 
   try {
-    const response = await axios.post(
-      OPENROUTER_API_URL,
-      {
-        model: "deepseek/deepseek-r1:free",
-        messages: [{ role: "user", content: userInput }],
-      },
-      {
-        headers: {
-          "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        timeout: 30000,
-      }
-    );
+   const response = await axios.post(
+  OPENROUTER_API_URL,
+  {
+    model: "deepseek/deepseek-r1:free",
+    messages: [{ role: "user", content: userInput }],
+  },
+  {
+    headers: {
+      "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+      "Content-Type": "application/json",
+      "HTTP-Referer": "https://deepconverseai-8.onrender.com",  // Required by OpenRouter
+      "X-Title": "DeepConverseAI-8"        // Required by OpenRouter
+    },
+    timeout: 30000
+  }
+);
 
     res.json({ 
       botMessage: {
