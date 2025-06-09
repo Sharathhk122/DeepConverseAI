@@ -11,7 +11,7 @@ app.use(cors()); // Enable CORS
 app.use(express.json()); // Parse JSON requests
 
 // OpenRouter API details
-const OPENROUTER_API_KEY = "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";
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
 
 // Debug: Check if API key is loaded
@@ -42,8 +42,10 @@ app.post("/get-bot-response", async (req, res) => {
         headers: {
           "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
           "Content-Type": "application/json",
+          "HTTP-Referer": "http://localhost:4000", // Required by OpenRouter
+          "X-Title": "AI Chat App" // Optional but recommended
         },
-        timeout: 90000, // 30 seconds timeout
+        timeout: 30000, // 30 seconds timeout
       }
     );
 
@@ -58,7 +60,11 @@ app.post("/get-bot-response", async (req, res) => {
     }
 
     res.status(error.response?.status || 500).json({
-      botMessage: error.response?.data?.error || "⚠️ API request failed.",
+      error: error.response?.data?.error || "⚠️ API request failed.",
+      botMessage: {
+        text: "Sorry, I couldn't process your request. Please try again later.",
+        sender: "bot"
+      }
     });
   }
 });
