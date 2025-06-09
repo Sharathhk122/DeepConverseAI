@@ -2,25 +2,30 @@ import express from "express";
 import * as dotenv from "dotenv";
 import cors from "cors";
 import axios from "axios";
+import path from "path";
+import { fileURLToPath } from "url";
 
+// Load environment variables from .env
 dotenv.config();
 
+// Create Express app
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Verify API key is loaded
+// Get API key from environment
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
 if (!OPENROUTER_API_KEY) {
   console.error("❌ Missing OPENROUTER_API_KEY in .env");
   process.exit(1);
 }
 
+// API Route
 app.post("/get-bot-response", async (req, res) => {
   const { userInput } = req.body;
 
   if (!userInput) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       error: "User input is required",
       botMessage: {
         text: "Please enter a message to continue.",
@@ -38,44 +43,54 @@ app.post("/get-bot-response", async (req, res) => {
       },
       {
         headers: {
-          "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-          "HTTP-Referer": "https://deepconverseai-13.onrender.com", // Replace with your actual URL
-          "X-Title": "AI Chat App",       // Your app name
+          Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+          "HTTP-Referer": "https://deepconverseai-13.onrender.com", // ✅ Update if needed
+          "X-Title": "AI Chat App",
           "Content-Type": "application/json"
         },
         timeout: 30000
       }
     );
 
+    const botResponse = response.data.choices?.[0]?.message?.content || "No response from AI";
+
     res.json({
       botMessage: {
-        text: response.data.choices[0].message.content,
+        text: botResponse,
         sender: "bot"
       }
     });
 
   } catch (error) {
     console.error("API Error:", error.response?.data || error.message);
-    
-    res.status(500).json({
+
+    const statusCode = error.response?.status || 500;
+    const message = getErrorMessage(error);
+
+    res.status(statusCode).json({
       error: "API request failed",
       botMessage: {
-        text: getErrorMessage(error),
+        text: message,
         sender: "bot"
       }
     });
   }
 });
 
+// Error message formatter
 function getErrorMessage(error) {
   if (error.response?.status === 401) {
-    return "Authentication failed. Please check the API configuration.";
+    return "Authentication failed. Please check the API key in your .env file.";
   }
   if (error.response?.data?.error?.message) {
     return error.response.data.error.message;
   }
-  return "Sorry, I encountered an error. Please try again later.";
+  return "Sorry, something went wrong. Try again later.";
 }
 
+// Start server
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`==> Server running on port ${PORT}`);
+  console.log("==> Your service is live 🎉");
+});
