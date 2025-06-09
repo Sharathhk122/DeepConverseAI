@@ -44,7 +44,7 @@ app.post("/get-bot-response", async (req, res) => {
       {
         headers: {
           Authorization: `Bearer ${OPENROUTER_API_KEY}`,
-          "HTTP-Referer": "https://deepconverseai-13.onrender.com", // ✅ Update if needed
+          "HTTP-Referer": "https://deepconverseai-14.onrender.com", // ✅ Update if needed
           "X-Title": "AI Chat App",
           "Content-Type": "application/json"
         },
