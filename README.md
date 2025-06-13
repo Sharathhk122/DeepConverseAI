@@ -204,7 +204,6 @@ Visit 👉 [http://localhost:3000/chat](http://localhost:3000/chat)
 | ![Feature 5](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(947).png) | Another feature screenshot |
 | ![Feature 6](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(948).png) | Another feature screenshot |
 | ![Feature 7](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(949).png) | Another feature screenshot |
-| ![Feature 8](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(950).png) | Another feature screenshot |
 | ![Feature 9](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(951).png) | Another feature screenshot |
 | ![Feature 10](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(952).png) | Another feature screenshot |
 | ![Feature 11](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(953).png) | Another feature screenshot |
