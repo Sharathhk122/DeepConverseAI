@@ -1,8 +1,14 @@
 # 🚀 ChatGPT DApp 🎙️
+## 🌐 Live Demo - DeepConverse AI
+
+🚀 Check out the live deployed DeepConverse AI application here:  
+👉 [DeepConverse AI Live](https://deepconverseai-sharath.onrender.com/)
 
 A fully decentralized ChatGPT membership DApp powered by **React**, **Hardhat**, **ethers.js**, **MetaMask**, and integrated with **DeepSeek API** for AI-powered conversations. This project combines blockchain technology with AI to provide secure, subscription-based access to a decentralized chatbot.
 
 ---
+
+
 
 ## ✨ Features
 
