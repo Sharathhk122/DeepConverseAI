@@ -193,11 +193,11 @@ Visit 👉 [http://localhost:3000/chat](http://localhost:3000/chat)
 | ![Front Page](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(940\).png)                | Front page                                        |
 | ![Membership Options](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(941\).png)        | Membership Options                                |
 | ![Transaction Confirmations](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(942\).png) | MetaMask Confirmations                            |
-| ![Front Page](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(940\).png)                | Front page                                        |
-| ![Membership Options](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(941\).png)        | Membership Options                                |
-| ![Transaction Confirmations](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(942\).png) | MetaMask Confirmations                            |
-| ...                                                                                                      | *(More feature screenshots as you already added)* |
-                                                                                                  | *(More feature screenshots as you already added)* |
+| ![Chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1038).png)                |Chat page                                    |
+| ![Chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1039).png)        | chat psge                                   |
+| ![chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1040).png) | chat code       
+![Chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1041).png) | chat  code    |
+                                                                                                 
 
 ---
 
