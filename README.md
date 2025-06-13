@@ -196,8 +196,25 @@ Visit 👉 [http://localhost:3000/chat](http://localhost:3000/chat)
 | ![Chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1038).png)                |Chat page                                    |
 | ![Chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1039).png)        | chat psge                                   |
 | ![chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1040).png) | chat code       
-![Chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1041).png) | chat  code    |
-                                                                                                 
+![Chat page](https://github.com/Sharathhk122/DeepConverseAI/blob/main/Screenshot%20(1041).png) | chat  code    |                                                                                         
+| ![Feature 1](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(943).png) | Feature screenshot |
+| ![Feature 2](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(944).png) | Another feature screenshot |
+| ![Feature 3](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(945).png) | Another feature screenshot |
+| ![Feature 4](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(946).png) | Another feature screenshot |
+| ![Feature 5](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(947).png) | Another feature screenshot |
+| ![Feature 6](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(948).png) | Another feature screenshot |
+| ![Feature 7](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(949).png) | Another feature screenshot |
+| ![Feature 8](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(950).png) | Another feature screenshot |
+| ![Feature 9](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(951).png) | Another feature screenshot |
+| ![Feature 10](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(952).png) | Another feature screenshot |
+| ![Feature 11](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(953).png) | Another feature screenshot |
+| ![Feature 12](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(954).png) | Another feature screenshot |
+| ![Feature 13](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(955).png) | Another feature screenshot |
+| ![Feature 14](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(956).png) | Another feature screenshot |
+| ![Feature 15](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(957).png) | Another feature screenshot |
+| ![Feature 16](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(958).png) | Another feature screenshot |
+| ![Feature 17](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(959).png) | Another feature screenshot |
+| ![Feature 18](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20(960).png) | Another feature screenshot |
 
 ---
 
