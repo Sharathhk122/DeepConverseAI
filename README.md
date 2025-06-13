@@ -193,7 +193,11 @@ Visit 👉 [http://localhost:3000/chat](http://localhost:3000/chat)
 | ![Front Page](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(940\).png)                | Front page                                        |
 | ![Membership Options](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(941\).png)        | Membership Options                                |
 | ![Transaction Confirmations](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(942\).png) | MetaMask Confirmations                            |
+| ![Front Page](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(940\).png)                | Front page                                        |
+| ![Membership Options](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(941\).png)        | Membership Options                                |
+| ![Transaction Confirmations](https://github.com/Sharathhk122/ChatBot/blob/main/Screenshot%20\(942\).png) | MetaMask Confirmations                            |
 | ...                                                                                                      | *(More feature screenshots as you already added)* |
+                                                                                                  | *(More feature screenshots as you already added)* |
 
 ---
 
